@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -ex
+
+BOSH_DATA_DIRECTORY=${BOSH_DATA_DIRECTORY:-/var/vcap/store}
+
+BLOBSTORE_OWNER=${BLOBSTORE_OWNER:-vcap}
+BLOBSTORE_OWNER_GROUP=${BLOBSTORE_OWNER_GROUP:-vcap}
+
+<% if p('release_level_backup') %>
+  rm -rf $BOSH_DATA_DIRECTORY/minio-server
+  rm -rf $BOSH_DATA_DIRECTORY/minio-config
+
+  cp -rl $BBR_ARTIFACT_DIRECTORY/minio-server $BOSH_DATA_DIRECTORY
+  cp -rl $BBR_ARTIFACT_DIRECTORY/minio-config $BOSH_DATA_DIRECTORY
+
+  chown --recursive $BLOBSTORE_OWNER:$BLOBSTORE_OWNER_GROUP $BOSH_DATA_DIRECTORY
+<% end %>

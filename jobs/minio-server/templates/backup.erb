@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -ex
+
+BOSH_DATA_DIRECTORY=${BOSH_DATA_DIRECTORY:-/var/vcap/store}
+
+<% if p('release_level_backup') %>
+  cp -rl $BOSH_DATA_DIRECTORY/minio-server $BBR_ARTIFACT_DIRECTORY
+  cp -rl $BOSH_DATA_DIRECTORY/minio-config $BBR_ARTIFACT_DIRECTORY
+
+  rm -rf $BBR_ARTIFACT_DIRECTORY/minio-server/*/buildpack_cache
+<% end %>
